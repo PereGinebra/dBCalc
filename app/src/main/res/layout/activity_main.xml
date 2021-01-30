@@ -8,18 +8,32 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/outdB"
+        android:id="@+id/maxOutdB"
         android:layout_width="250dp"
         android:layout_height="31dp"
-        android:text="Output dB"
+        android:text="Device max output dB"
         android:textAlignment="center"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.568" />
+        app:layout_constraintVertical_bias="0.631" />
+
+    <TextView
+        android:id="@+id/outdB"
+        android:layout_width="250dp"
+        android:layout_height="31dp"
+        android:text="Current dB max out"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/maxOutdB"
+        app:layout_constraintVertical_bias="0.048" />
 
     <EditText
         android:id="@+id/inEff"
@@ -55,7 +69,7 @@
         android:layout_height="wrap_content"
         android:autofillHints="Output Voltage"
         android:ems="10"
-        android:hint="Voltage (Volts)"
+        android:hint="Maximum Voltage (Volts)"
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,10 +81,13 @@
         android:id="@+id/calc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
         android:onClick="calculate"
-        app:layout_constraintBottom_toTopOf="@+id/outdB"
+        app:layout_constraintBottom_toTopOf="@+id/maxOutdB"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inVolt" />
+        app:layout_constraintTop_toBottomOf="@+id/inVolt"
+        app:layout_constraintVertical_bias="0.2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

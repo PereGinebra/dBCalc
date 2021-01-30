@@ -1,10 +1,16 @@
 package com.example.headphonedb;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.media.AudioDeviceInfo;
+import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,14 +20,15 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
 
-    TextView outdBox;
+    TextView MaxOutdBox, outdBox;
     EditText inEffBox, inVoltBox, inResBox;
     Button calcButton;
+    private AudioManager am;
+    private float max_db;
 
     public void calculate (View view) {
         int eff, res;
         double volt;
-        double db;
 
         if(!inEffBox.getText().toString().equals(""))
             eff = Integer.parseInt(inEffBox.getText().toString());
@@ -34,14 +41,23 @@ public class MainActivity extends AppCompatActivity {
         else volt = -1;
 
         if(eff != -1 && res != -1 && volt != -1) {
-            db = eff+10*Math.log10(((volt*volt)/res)*1000);
-            outdBox.setTextColor(Color.BLACK);
-            outdBox.setText(String.valueOf(db)+" dB");
+
+            max_db = eff+10*(float)Math.log10(((volt*volt)/res)*1000);
+            MaxOutdBox.setTextColor(Color.BLACK);
+            MaxOutdBox.setText(String.valueOf(max_db)+" dB");
+
+            int stream_type = AudioManager.STREAM_MUSIC;
+            float db = am.getStreamVolumeDb(stream_type, am.getStreamVolume(stream_type),  AudioDeviceInfo.TYPE_WIRED_HEADPHONES);
+            float db_out = max_db + db;
+            if(db_out < 0) db_out = 0;
+            outdBox.setText(String.valueOf(db_out)+ " dB");
         }
         else {
-            outdBox.setText("Some values are missing");
-            outdBox.setTextColor(Color.rgb(210,0,0));
+            MaxOutdBox.setText("Some values are missing");
+            MaxOutdBox.setTextColor(Color.rgb(210,0,0));
+            outdBox.setText("Current dB max out");
         }
+
     }
 
     @Override
@@ -49,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MaxOutdBox = findViewById(R.id.maxOutdB);
         outdBox = findViewById(R.id.outdB);
         inEffBox = findViewById(R.id.inEff);
         inVoltBox = findViewById(R.id.inVolt);
@@ -56,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         calcButton = findViewById(R.id.calc);
 
         calcButton.setText("calcdB");
+
+        am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 
     }
 }
